@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-//import "hardhat/console.sol";
-
 contract Assessment {
+
     address payable public owner;
     uint256 public balance;
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
+    event AmountTransferred(address recipient, uint256 amount);
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
@@ -56,5 +56,19 @@ contract Assessment {
 
         // emit the event
         emit Withdraw(_withdrawAmount);
+    }
+
+    function transferAmount(address recipient, uint256 amount) public {
+        
+        require(balance >= amount, "Insufficient contract balance");
+
+        // TODO: TRANSFER  THE AMOUNT
+        // -------------
+
+        // Update the contract balance
+        balance -= amount;
+
+        // Emit the event
+        // emit AmountTransferred(recipient, amount);
     }
 }
