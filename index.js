@@ -7,6 +7,8 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState(0);
 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const atmABI = atm_abi.abi;
@@ -98,6 +100,13 @@ export default function HomePage() {
     }
   };
 
+  const transfer = async (recipient, amount) => {
+    let tx = await atm
+      .transferAmount(recipient, amount)
+    await tx.wait();
+    getBalance();
+  };
+
   const checkBalance = () => {
     window.alert("Your Balance: " + balance);
   };
@@ -127,6 +136,26 @@ export default function HomePage() {
         <button onClick={checkBalance}>Check balance</button>
         <button onClick={DepositButton}>Deposit</button>
         <button onClick={WithdrawButton}>Withdraw</button>
+        <br />
+        <div>
+          <input
+            type="text"
+            onChange={(e) => {
+              const value = e.target.value;
+              setRecipient(value);
+              console.log(e.target.value);
+            }}
+          />
+          <input
+            type="number"
+            onChange={(e) => {
+              const amount = e.target.value;
+              setAmount(amount);
+              console.log(e.target.value);
+            }}
+          />
+          <button onClick={() => transfer(recipient, amount)}>transfer</button>
+        </div>
       </div>
     );
   };
